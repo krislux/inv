@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0" />
+    <link type="text/css" rel="stylesheet" href="dist/css/app.css">
+</head>
+<body>
+    <main>
+
+        <button class="btn btn--floater floater" @click="openItemDialog">+</button>
+
+        <menu class="tabbar">
+            <li class="tabbar__item" v-for="(list, listKey) in lists">
+                <button class="btn btn--tab" :class="{'btn--active': listKey === activeList}" v-text="listKey" @click="selectList(listKey)"></button>
+            </li>
+            <li class="tabbar__item">
+                <button class="btn btn--tab" @click="addList">+</button>
+            </li>
+        </menu>
+
+        <ul class="list">
+            <li class="list__entry" v-for="(entry, entryKey) in lists[activeList]" :class="{'list__entry--disabled': entry.amount === 0}">
+                <div class="list__entry__text">
+                    <span v-if="entry.amount > 1" v-text="entry.amount + ' ×'"></span> <span v-text="entry.title" :title="entry.title"></span>
+                </div>
+
+                <div class="list__entry__controls">
+                    <button class="btn" @click="deleteEntry(entryKey)" v-show="entry.amount === 0">&#10060;</button>
+                    <button class="btn" @click="modifyAmount(entry, -1)" v-show="entry.amount > 0">-</button>
+                    <button class="btn" @click="modifyAmount(entry, +1)">+</button>
+                </div>
+            </li>
+        </ul>
+
+        <div class="dialog" v-show="itemDialogOpen">
+            <form @submit.prevent="addEntry" class="add-form">
+                <p>
+                    <label for="entry-name">Item title</label>
+                </p>
+
+                <p>
+                    <input type="text" list="previous-entries" id="entry-name">
+                </p>
+
+                <p>
+                    <button class="btn btn--primary" type="submit">OK</button>
+                    <button class="btn" type="reset" @click="itemDialogOpen = false">Cancel</button>
+                </p>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- <input type="text" list="testlist">
+    <datalist id="testlist">
+        <option>Fish</option>
+    </datalist> -->
+
+    <script src="dist/js/app.js"></script>
+</body>
+</html>
