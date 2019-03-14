@@ -2,9 +2,7 @@
 require('../sass/main.scss');
 
 import Vue from 'vue/dist/vue.esm';
-// import VueDraggable from 'vue-draggable';
-
-// Vue.use(VueDraggable);
+import Sortable from 'sortablejs';
 
 new Vue({
     el: 'main',
@@ -39,6 +37,8 @@ new Vue({
 
         selectList(key) {
             this.activeList = key;
+
+            document.title = this.activeList + ' | inv';
 
             this.save(true, ['activeList']);
         },
@@ -111,5 +111,22 @@ new Vue({
     },
     mounted() {
         this.load();
+
+        document.title = this.activeList + ' | inv';
+
+        let $list = document.querySelector('.list');
+        let sortable = Sortable.create($list, {
+            direction: 'vertical',
+            handle: '.list__entry__text',
+            onEnd: event => {
+                let entry = this.lists[this.activeList].splice(event.oldIndex, 1)[0];
+                this.lists[this.activeList].splice(event.newIndex, 0, entry);
+
+                // Necessary to prevent sorting from conflicting with Vue and jumping around. There's probably a better way.
+                sortable.sort(Object.keys(this.lists[this.activeList]));
+
+                this.save(true, ['lists']);
+            }
+        });
     }
 });

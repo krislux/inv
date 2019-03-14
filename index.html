@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>inv</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0" />
     <link type="text/css" rel="stylesheet" href="dist/css/app.css">
@@ -21,7 +21,7 @@
         </menu>
 
         <ul class="list">
-            <li class="list__entry" v-for="(entry, entryKey) in lists[activeList]" :class="{'list__entry--disabled': entry.amount === 0}">
+            <li class="list__entry" v-for="(entry, entryKey) in lists[activeList]" :class="{'list__entry--disabled': entry.amount === 0}" :data-id="entryKey">
                 <div class="list__entry__text">
                     <span v-if="entry.amount > 1" v-text="entry.amount + ' ×'"></span> <span v-text="entry.title" :title="entry.title"></span>
                 </div>
